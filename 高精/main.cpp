@@ -66,16 +66,50 @@ string sub(string a, string b){
 	
 	result.erase(0, result.find_first_not_of('0'));
 	
+	// 如果为空串表示结果为0
+	if(result.length() == 0){
+		return "0";
+	}
+	
 	return prefix + result;
+}
+
+// 要用到大数加
+string mul(string a, string b){
+	string result = "0";
+	int i, j;
+	int lena = a.length() - 1, lenb = b.length() - 1;
+	
+	for(i=lena; i>=0; i--){
+		if(a[i] != '0'){
+			int ok = 0, temp, n;
+			string temp_str = "";
+			// 末尾补零
+			for(j=0; j<lena-i; j++)
+				temp_str += "0";
+				
+			for(j=lenb; j>=0; j--){
+				temp = (b[j] - '0') * (a[i] - '0') + ok;
+				n = temp % 10;
+				ok = temp / 10;
+				temp_str = char(n+'0') + temp_str;
+			}
+			
+			if(ok) temp_str = char(ok+'0') + temp_str;
+			result = add(result, temp_str);
+		}
+	}
+	
+	return result;
 }
 
 int main(){
 	string a, b;
 	
-	while(true){
-		cin >> a >> b;
+	while(cin >> a >> b){
 		cout << a << "+" << b << " = " << add(a, b) << endl;
 		cout << a << "-" << b << " = " << sub(a, b) << endl;
+		cout << a << "*" << b << " = " << mul(a, b) << endl << endl;
 	}
 	
 	return 0;
