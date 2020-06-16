@@ -24,13 +24,14 @@ void union_pq(int p, int q){
 	int pRoot = find(p);
 	int qRoot = find(q);
 	
+	// 之前这里写成 sz[p]... 了，非常谔谔的低级错误，我改悔
 	if(p != q){
-		if(sz[p] > sz[q]){
-			id[q] = id[p];
-			sz[p] += sz[q];
+		if(sz[pRoot] > sz[qRoot]){
+			id[qRoot] = id[pRoot];
+			sz[pRoot] += sz[qRoot];
 		}else{
-			id[p] = id[q];
-			sz[q] += sz[p];
+			id[pRoot] = id[qRoot];
+			sz[qRoot] += sz[pRoot];
 		}
 	}
 }

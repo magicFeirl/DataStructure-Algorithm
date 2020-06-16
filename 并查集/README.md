@@ -9,12 +9,18 @@
 现在有两个根节点P、Q需要连接，为了优化查询时间，我们总是将小树连接到大树上，这样可以减少搜索的深度。为此需要新开一个数组用来保存树中的节点数，在每次连接前我们先判断对应树的大小，然后根据先前的思想将小树连到大树上（把小树的根指向大树的根），最后将小树的节点数增加到大树的节点数中。
 
 ```c++
-if(sz[p] > sz[q]){
-    id[q] = id[p];
-    sz[p] += sz[q];
-}else{
-    id[p] = id[q];
-    sz[q] += sz[p];
+int pRoot = find(p);
+int qRoot = find(q);
+
+// 之前这里写成 sz[p]... 了，非常谔谔的低级错误，我改悔
+if(p != q){
+    if(sz[pRoot] > sz[qRoot]){
+        id[qRoot] = id[pRoot];
+        sz[pRoot] += sz[qRoot];
+    }else{
+        id[pRoot] = id[qRoot];
+        sz[qRoot] += sz[pRoot];
+    }
 }
 ```
 
@@ -51,3 +57,29 @@ int find(int p){
 }
 ```
 
+## 更新
+
+> 2020年6月16日
+
+把连接根写成连接点了，也就是之前写的代码：
+
+```c++
+void union_pq(int p, int q){
+	int pRoot = find(p);
+	int qRoot = find(q);
+	
+	if(p != q){
+		if(sz[p] > sz[q]){
+			id[q] = id[p];
+			sz[p] += sz[q];
+		}else{
+			id[p] = id[q];
+			sz[q] += sz[p];
+		}
+	}
+}
+```
+
+这里根本没有将根连起来....不过调的时候结果是对的，正是因为如此导致后面都错了。
+
+水了一道并查集题后发现了错误（调了半天），估计以后是错不了了。
